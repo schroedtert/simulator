@@ -4,9 +4,11 @@ add_library(core
     simulation.cpp
     simulation.hpp
 
-    util/identifiable.hpp
-
+    geometry/world_builder.cpp
+    geometry/world_builder.hpp
     geometry/length_unit.hpp
+
+    util/identifiable.hpp
 
     math/int_pow.hpp
 )
