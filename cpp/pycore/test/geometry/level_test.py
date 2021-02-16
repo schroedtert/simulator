@@ -1,9 +1,8 @@
-import jpscore
 import pytest
 from jpscore.geometry import Level
 
 
-class TestCoordinate:
+class TestLevel:
     @pytest.mark.parametrize(
         "level_id, reference",
         [
