@@ -1,3 +1,4 @@
+#include "geometry/coordinate_binding.hpp"
 #include "geometry/length_unit_binding.hpp"
 #include "geometry/level_binding.hpp"
 #include "geometry/world_builder_binding.hpp"
@@ -18,6 +19,7 @@ PYBIND11_MODULE(jpscore, m)
 
     /// SUB MODULE geometry
     auto m_geometry = m.def_submodule("geometry");
+    bind_coordinate(m_geometry);
     bind_length_unit(m_geometry);
     bind_level(m_geometry);
     bind_world_builder(m_geometry);
