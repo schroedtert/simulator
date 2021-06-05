@@ -1,3 +1,4 @@
+#include "agent/agent_binding.hpp"
 #include "geometry/area_binding.hpp"
 #include "geometry/coordinate_binding.hpp"
 #include "geometry/length_unit_binding.hpp"
@@ -20,6 +21,7 @@ PYBIND11_MODULE(jpscore, m)
     bind_simulation(m);
     bind_jpsexception(m);
     bind_simulation_clock(m);
+    bind_agent(m);
 
     /// SUB MODULE logging
     auto m_logging = m.def_submodule("logging");

@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <simulation.hpp>
 
 void bind_simulation(pybind11::module_ & m)
@@ -17,4 +18,7 @@ void bind_simulation(pybind11::module_ & m)
             "get_world",
             &jps::Simulation::getWorld,
             pybind11::return_value_policy::reference_internal);
+        .def("add_agent", &jps::Simulation::addAgent)
+        .def_property_readonly("agents", &jps::Simulation::getAgents,
+        pybind11::return_value_policy::reference_internal);
 }
