@@ -22,13 +22,17 @@ def test_trajectorywriter_is_only_interface():
 def test_simpletrajectorywriter_writes_header_deletes_content_of_file(
     tmp_path,
 ):
+    content_to_be_deleted = "This is some content which should be deleted\n"
     trajectory_txt = tmp_path / "trajectory.txt"
     with trajectory_txt.open("w") as f:
-        f.write("This is some content which should be deleted")
+        f.write(content_to_be_deleted)
 
     SimpleTrajectoryWriter.write_header(trajectory_txt)
 
-    # TODO add test
+    with trajectory_txt.open("r") as f:
+        lines = f.readlines()
+        assert len(lines) == 1
+        assert not content_to_be_deleted in lines[0]
 
 
 def test_simpletrajectorywriter_writes_header(tmp_path):
@@ -36,7 +40,10 @@ def test_simpletrajectorywriter_writes_header(tmp_path):
 
     SimpleTrajectoryWriter.write_header(trajectory_txt)
 
-    # TODO add test
+    with trajectory_txt.open("r") as f:
+        lines = f.readlines()
+        assert len(lines) == 1
+        assert lines[0] == "frame ID x y z\n"
 
 
 @pytest.mark.parametrize(
@@ -63,7 +70,13 @@ def test_simpletrajectorywriter_writes_trajectories(tmp_path, agents):
     trajectory_txt = tmp_path / "trajectory.txt"
 
     SimpleTrajectoryWriter.write_trajectory(trajectory_txt, 0, agents)
-    # TODO add test
+
+    with trajectory_txt.open("r") as f:
+        lines = f.readlines()
+        assert len(lines) == len(agents)
+        for line in lines:
+            columns = re.split("\s+", line.rstrip())
+            assert len(columns) == 5
 
 
 @pytest.mark.parametrize(
@@ -86,12 +99,17 @@ def test_simpletrajectorywriter_writes_trajectories(tmp_path, agents):
         ],
     ],
 )
-def test_simpletrajectorywriter_writes_complete_trajectory_file(
-    tmp_path, agents
-):
+def test_simpletrajectorywriter_writes_complete_trajectories(tmp_path, agents):
+    max_iteratrions = 10
     trajectory_txt = tmp_path / "trajectory.txt"
 
     SimpleTrajectoryWriter.write_header(trajectory_txt)
-    SimpleTrajectoryWriter.write_trajectory(trajectory_txt, 0, agents)
+    for i in range(max_iteratrions):
+        SimpleTrajectoryWriter.write_trajectory(trajectory_txt, i, agents)
 
-    # TODO add test
+    with trajectory_txt.open("r") as f:
+        lines = f.readlines()
+        assert len(lines) == len(agents * max_iteratrions) + 1
+        for line in lines:
+            columns = re.split("\s+", line.rstrip())
+            assert len(columns) == 5
