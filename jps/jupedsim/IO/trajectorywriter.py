@@ -1,4 +1,5 @@
 import pathlib
+from abc import ABCMeta, abstractclassmethod, abstractmethod
 from string import Template
 from typing import List
 
@@ -6,12 +7,14 @@ from jpscore import Agent
 from jpscore.geometry import LengthUnit, Units
 
 
-class TrajectoryWriter:
+class TrajectoryWriter(metaclass=ABCMeta):
+    @abstractmethod
     def write_header(trajectory_file: pathlib.Path):
-        pass
+        raise NotImplementedError
 
+    @abstractmethod
     def write_trajectory(trajectory_file, step: int, agents: List[Agent]):
-        pass
+        raise NotImplementedError
 
 
 class SimpleTrajectoryWriter(TrajectoryWriter):

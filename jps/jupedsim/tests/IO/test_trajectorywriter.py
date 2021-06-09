@@ -1,7 +1,22 @@
+import re
+
 import pytest
 from jpscore import Agent, JPSGeometryException, Simulation
 from jpscore.geometry import Coordinate, LengthUnit, Level, Units
-from jupedsim.IO.trajectorywriter import SimpleTrajectoryWriter
+from jupedsim.IO.trajectorywriter import (
+    SimpleTrajectoryWriter,
+    TrajectoryWriter,
+)
+
+
+def test_trajectorywriter_is_only_interface():
+    file_path = "dummy"
+    with pytest.raises(TypeError):
+        can_not_instantiate = TrajectoryWriter()
+    with pytest.raises(NotImplementedError):
+        TrajectoryWriter.write_header(file_path)
+    with pytest.raises(NotImplementedError):
+        TrajectoryWriter.write_trajectory(file_path, 0, [])
 
 
 def test_simpletrajectorywriter_writes_header_deletes_content_of_file(
